@@ -26,12 +26,17 @@ public class VoicebankDaoService {
 
     public Voicebank getVoicebank(int id) {
         Predicate<? super Voicebank> predicate = voicebank -> voicebank.getId().equals(id);
-        return voicebanks.stream().filter(predicate).findFirst().get();
+        return voicebanks.stream().filter(predicate).findFirst().orElse(null);
     }
 
     public Voicebank save(Voicebank voicebank) {
         voicebank.setId(++count);
         voicebanks.add(voicebank);
         return voicebank;
+    }
+
+    public void deleteVoicebankById(int id) {
+        Predicate<? super Voicebank> predicate = voicebank -> voicebank.getId().equals(id);
+        voicebanks.removeIf(predicate);
     }
 }

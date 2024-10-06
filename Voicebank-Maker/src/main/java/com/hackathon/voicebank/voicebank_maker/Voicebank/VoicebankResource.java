@@ -25,7 +25,17 @@ public class VoicebankResource {
     //GET id of voicebank
     @GetMapping("/voicebanks/{id}")
     public Voicebank getVoicebank(@PathVariable int id) {
-        return service.getVoicebank(id);
+        Voicebank voicebank = service.getVoicebank(id);
+        if (voicebank == null) {
+            throw new UserNotFoundException("id:" + id);
+        }
+        return voicebank;
+    }
+
+    //DELETE id of voicebank
+    @DeleteMapping("/voicebanks/{id}")
+    public void deleteVoicebank(@PathVariable int id) {
+        service.deleteVoicebankById(id);
     }
 
     //POST /voicebanks
@@ -33,9 +43,9 @@ public class VoicebankResource {
     public ResponseEntity<Voicebank> createVoicebank(@RequestBody Voicebank voicebank) {
         Voicebank savedVoicebank = service.save(voicebank);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(savedVoicebank.getId())
-                    .toUri();
+                .path("/{id}")
+                .buildAndExpand(savedVoicebank.getId())
+                .toUri();
         return ResponseEntity.created(location).build();
     }
 }
