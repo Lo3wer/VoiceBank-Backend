@@ -1,23 +1,34 @@
 package com.hackathon.voicebank.voicebank_maker.Voicebank;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.io.File;
+import java.util.Arrays;
 
+@Entity(name = "voicebank_details")
 public class Voicebank {
 
+    @Id
+    @GeneratedValue
     private Integer id;
     @Size(min = 2, message = "Name must be at least 2 characters")
     private String name;
-    @NotNull(message = "Input file")
-    private File file;
+    private String type;
+    @Lob
+    private byte[] fileData;
 
-    public Voicebank(Integer id, String name, File file) {
+    public Voicebank(Integer id, String name, String type, byte[] fileData) {
         super();
         this.id = id;
         this.name = name;
-        this.file = file;
+        this.type = type;
+        this.fileData = fileData;
+    }
+
+    public Voicebank() {
+        super();
     }
 
     public Integer getId() {
@@ -28,20 +39,28 @@ public class Voicebank {
         this.id = id;
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public String getName() {
+    public @Size(min = 2, message = "Name must be at least 2 characters") String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(@Size(min = 2, message = "Name must be at least 2 characters") String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public byte[] getFileData() {
+        return fileData;
+    }
+
+    public void setFileData(byte[] fileData) {
+        this.fileData = fileData;
     }
 
 
@@ -50,7 +69,8 @@ public class Voicebank {
         return "Voicebank{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", file=" + file +
+                ", type='" + type + '\'' +
+                ", fileData=" + Arrays.toString(fileData) +
                 '}';
     }
 }
